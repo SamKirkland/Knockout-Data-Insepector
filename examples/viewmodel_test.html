@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js" integrity="sha256-owX7sroiO/O1a7h3a4X29A1g3QgqdNvijRQ7V5TH45M=" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#add_frame").on('click', function() {
+                    // chrome requires inspected frames to have a unique src attribute so we can distinguish them in the inspector
+                    $(".iframe-wrapper").append(`<iframe src="iframe_test.html?${new Date().getTime()}"></iframe>`);
+                });
+
+                function ViewModel() {
+                    this.numberObservable = ko.observable(Math.floor(Math.random() * 100) + 1);
+                    this.number = 123;
+
+                    this.stringObservable = ko.observable("string");
+                    this.string = "str";
+
+                    this.booleanObservable = ko.observable(true);
+                    this.boolean = false;
+
+                    this.observableArray = ko.observableArray([1,2,3,"test"]);
+                    this.array = [1, 2, 3, "test", { isObject: true }];
+
+                    this.observableFunction = ko.observable(function() {
+                        alert("test");
+                    });
+                    this.function = function() {
+                        alert("test");
+                    };
+
+                    this.computed = ko.computed((x) => {
+                        return this.stringObservable();
+                    });
+                    this.pureComputed = ko.pureComputed((x) => {
+                        return this.stringObservable();
+                    });
+
+                    this.recursive = this;
+                }
+
+                ko.applyBindings(new ViewModel());
+            });
+        </script>
+        <style>
+            .iframe-wrapper {
+                display: flex;
+            }
+            iframe {
+                flex: 1 1 auto;
+                height: 700px;
+            }
+        </style>
+    </head>
+    <body>
+        <p>number that cant change: <strong data-bind="text: number">loading...</strong></p>
+        <p>number that can be changed: <strong data-bind="text: numberObservable">loading...</strong></p>
+        <button id="add_frame">Add another iframe</button>
+        <div class="iframe-wrapper"></div>
+    </body>
+</html>

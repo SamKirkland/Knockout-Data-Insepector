@@ -1,0 +1,103 @@
+<html>
+    <head>
+        <script src="jquery-3.3.1.min.js"></script>
+        <script src="knockout-3.4.2.js"></script>
+        <script src="devtools.js"></script>
+        <style>
+            body {
+                margin: 5px 0;
+            }
+
+            * {
+                font-size: 12px !important;
+                font-family: Consolas, Lucida Console, Courier New, monospace;
+            }
+
+            ul {
+                padding: 0;
+                list-style-type: none;
+            }
+
+
+
+            object-preview .list-key {
+                display: flex;
+            }
+            object-preview .list-value {
+                display: flex;
+            }
+
+            object-preview .object-spacer {
+                width: 18px;
+                height: 18px;
+                flex-shrink: 0;
+            }
+            object-preview .object-preview {
+                white-space: nowrap;
+            }
+            object-preview .break-line {
+                height: 0;
+                clear: both;
+            }
+
+            object-preview .expandable {
+                background: url('expand.svg');
+                background-size: contain;
+                cursor: pointer;
+                transform: rotate(-90deg);
+            }
+            object-preview .expandable.expanded {
+                transform: rotate(0deg);
+            }
+
+
+            object-preview ul {
+                margin-left: 18px;
+            }
+            object-preview ul object-preview {
+                /* object preview, inline (collapsed) by default */
+                display: inline;
+            }
+            /* expanded view of object, each on its own line */
+            object-preview ul.expanded object-preview {
+                display: block;
+            }
+
+            object-preview .object-name {
+                color: rgb(136, 19, 145);
+                flex-shrink: 0;
+            }
+
+            object-preview .object-value {
+                border: none;
+                background: transparent;
+                box-sizing: content-box;
+                padding: 1px 3px;
+                height: 16px;
+            }
+            object-preview .object-value:focus {
+                outline: none;
+                box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .3);
+            }
+
+            object-preview .object-preview-key {
+                color: rgb(85, 85, 85);
+            }
+
+            object-preview .type-string {
+                color: rgb(196, 26, 22);
+            }
+            object-preview .type-number {
+                color: rgb(28, 0, 207);
+            }
+            object-preview .type-boolean {
+                color: rgb(13, 34, 170);
+            }
+        </style>
+    </head>
+    <body>
+        <ul data-bind="foreach: viewmodel_loop">
+            <object-preview params="key: key, value: value"></object-preview>
+        </ul>
+    </body>
+</html>
